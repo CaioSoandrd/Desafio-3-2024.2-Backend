@@ -27,38 +27,38 @@ try{
 
 }
 }
+async function loadPokemon() {
+  try {
+    const response = await fetch(pokemonList[currentIndex].url);
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
+    const pokemon = await response.json();
+    const formName = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
 
+    changeText('name', formName);
+    changeImage('img_sprite_front_default', pokemon.sprites.front_default || '../assets/missingno.png');
 
-
+  } catch (e) {
+    console.error('Erro ao carregar Pokémon:', e);
+    changeImage('img_sprite_front_default', '../assets/missingno.png');
+  }
+}
 
 function previousPokemon() {
-  alert("Pokemon Anterior");
-  //abra o terminal em inspecionar no chrome para visualizar
-  console.log("Pokemon Anterior");
-  currentIndex = (currentIndex - 1) %pokemonList.length;
+  currentIndex = (currentIndex - 1 + pokemonList.length) % pokemonList.length;
+  loadPokemon();
+  console.log(`Pokemon Anterior: ${currentIndex}`);
 }
 
 function nextPokemon() {
-  alert("Pokemon Seguinte");
-  //abra o terminal em inspecionar no chrome para visualizar
-  console.log("Pokemon Seguinte");
-  currentIndex = (currentIndex +1 ) %pokemonList.length;
+  currentIndex = (currentIndex + 1) % pokemonList.length;
+  loadPokemon();
+  console.log(`Pokemon Seguinte: ${currentIndex}`);
 }
 
-try{
-  async function loadPokemon(){
-const response = await fetch(pokemonList[currentIndex].url)
-    const pokemon = await response.json();
-
-const formName = pokemon.name[0].toUpperCase() +pokemon.name.slice(1);
-
-changeText('name', formName);
-changeImage('img_sprite_front_default', pokemon.sprites.front_default);
-
-  }
-
-}catch (e) {
-
-}
+window.addEventListener('load', () => {
+  fetchPokemonList();
+});
