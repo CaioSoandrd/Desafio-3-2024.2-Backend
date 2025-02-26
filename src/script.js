@@ -9,6 +9,25 @@ function changeText(id, text) {
 
 // Daqui para baixo voce ira escrever
 // o código para resolver o desafio
+let pokemonList = [];
+let currentIndex = 0;
+try{
+  async function fetchPokemonList() {
+
+  const response =await fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1292');
+  const data = await response.json();
+  pokemonList= data.results;
+
+}
+}catch (err) {
+  console.error('erro ao carregar a lista dos pokemons', err)
+
+}
+if (!response.ok) {
+  throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+
 
 function previousPokemon() {
   alert("Pokemon Anterior");
