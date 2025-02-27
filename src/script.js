@@ -47,6 +47,37 @@ async function loadPokemon() {
   }
 }
 
+async function searcPokemon(){
+    try {
+      const searchTerm = document.getElementById('searchinput').value.toLowerCase().trim();
+      if (!searchTerm) {
+        showFeedback('digite um nome válido');
+        return;
+
+      }
+      const foundPokemon = pokemonList.find(p=> p.name.toLowerCase() === searchTerm);
+      if (!foundPokemon){
+        showFeedback('Pokemnon não encontrado!');
+      }
+      currentIndex = pokemonList.findIndex(p => p.name === foundPokemon.name);
+
+      const response = await fetch(foundPokemon.url);
+
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar os dados do Pokémon`);
+      }
+
+      const pokemonData = await response.json();
+      changeText('name', pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1));
+      changeImage('img_sprite_front_default', pokemonData.sprites.front_default || '../assets/missingno.png');
+
+    } catch (err) {
+      console.error('Erro na busca', err);
+      showFeedback('erro ao realizar busca');
+
+    }
+}
+
 function previousPokemon() {
   currentIndex = (currentIndex - 1 + pokemonList.length) % pokemonList.length;
   loadPokemon();
