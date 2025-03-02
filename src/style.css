@@ -22,7 +22,6 @@ h2#name::after {
   width: 100px;
   height: 3px;
 }
-
 div.pageContent {
   max-width: 800px;
   margin: 0 auto;
